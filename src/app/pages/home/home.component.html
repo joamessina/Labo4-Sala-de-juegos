@@ -1,6 +1,40 @@
-<h1>Home</h1>
-<p>Bienvenido a la Sala de Juegos.</p>
-<ul>
-  <li><a routerLink="/login">Ir al Login</a></li>
-  <li><a routerLink="/quien-soy">Quién Soy</a></li>
-</ul>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h3 mb-3">Bienvenido a la Sala de Juegos</h1>
+        <p class="text-muted">Elegí una opción para comenzar:</p>
+
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="card border-0 h-100 bg-light">
+              <div class="card-body">
+                <h5 class="card-title">Acceder</h5>
+                <p class="card-text">
+                  Iniciá sesión para jugar y registrar tu progreso.
+                </p>
+                <a routerLink="/login" class="btn btn-primary w-100"
+                  >Ir al Login</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="card border-0 h-100 bg-light">
+              <div class="card-body">
+                <h5 class="card-title">Quién Soy</h5>
+                <p class="card-text">
+                  Datos del alumno y descripción del juego propio.
+                </p>
+                <a routerLink="/quien-soy" class="btn btn-outline-primary w-100"
+                  >Ver sección</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
