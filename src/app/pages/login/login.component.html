@@ -42,10 +42,19 @@
       </div>
 
       <!-- Botón -->
+      <div *ngIf="errorMsg" class="text-danger small mb-2">{{ errorMsg }}</div>
       <div class="d-grid">
-        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
-          Ingresar
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="form.invalid || loading"
+        >
+          {{ loading ? "Ingresando..." : "Ingresar" }}
         </button>
+      </div>
+
+      <div class="mt-3 text-center">
+        <a routerLink="/register">¿No tenés cuenta? Registrate</a>
       </div>
     </form>
   </div>
