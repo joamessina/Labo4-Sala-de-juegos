@@ -48,14 +48,19 @@ export class LoginComponent {
     if (this.form.invalid || this.loading) return;
     this.loading = true;
     this.errorMsg = '';
+    const { email, password } = this.form.getRawValue();
     try {
-      const { email, password } = this.form.getRawValue();
       await this.auth.login(email, password);
+      await this.auth.insertLoginLog(email);
       this.router.navigateByUrl('/');
     } catch (e: any) {
       this.errorMsg = e?.message ?? 'Error de login';
     } finally {
       this.loading = false;
     }
+  }
+
+  completar(email: string, pass: string) {
+    this.form.setValue({ email, password: pass });
   }
 }

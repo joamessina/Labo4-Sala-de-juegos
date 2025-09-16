@@ -11,9 +11,9 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 
 type RegisterForm = {
+  displayName: FormControl<string>;
   email: FormControl<string>;
   password: FormControl<string>;
-  displayName: FormControl<string>;
 };
 
 @Component({
@@ -35,6 +35,10 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.form = this.fb.group<RegisterForm>({
+      displayName: this.fb.control('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(2)],
+      }),
       email: this.fb.control('', {
         nonNullable: true,
         validators: [Validators.required, Validators.email],
@@ -43,27 +47,22 @@ export class RegisterComponent {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(6)],
       }),
-      displayName: this.fb.control('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.minLength(2)],
-      }),
     });
   }
 
   async submit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid || this.loading) return;
     this.loading = true;
     this.errorMsg = '';
-    this.successMsg = '';
+    const { displayName, email, password } = this.form.getRawValue();
     try {
-      const { email, password, displayName } = this.form.getRawValue();
       await this.auth.register(email, password, displayName);
-      this.successMsg =
-        'Te enviamos un email para confirmar la cuenta (si está activado).';
-      await this.auth.login(email, password);
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/');
     } catch (e: any) {
-      this.errorMsg = e?.message ?? 'Error al registrar';
+      const msg = (e?.message || '').toLowerCase();
+      this.errorMsg = msg.includes('already registered')
+        ? 'El usuario ya está registrado.'
+        : e?.message ?? 'Error al registrar';
     } finally {
       this.loading = false;
     }

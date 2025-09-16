@@ -41,6 +41,24 @@
         </div>
       </div>
 
+      <!-- accesos rápidos -->
+      <div class="mb-3 d-flex gap-2">
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          (click)="completar('admin@demo.com', '123456')"
+        >
+          Admin demo
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          (click)="completar('alumno@demo.com', '123456')"
+        >
+          Alumno demo
+        </button>
+      </div>
+
       <!-- Botón -->
       <div *ngIf="errorMsg" class="text-danger small mb-2">{{ errorMsg }}</div>
       <div class="d-grid">
