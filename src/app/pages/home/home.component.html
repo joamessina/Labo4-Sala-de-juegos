@@ -95,6 +95,28 @@
         </div>
 
         <!-- más tarjetas acá -->
+        <div class="col-sm-6 col-lg-4">
+          <div class="card h-100 bg-light border-0 compact-card">
+            <div class="card-body p-3">
+              <h5 class="card-title h6 mb-2">¿Mayor o Menor?</h5>
+              <p class="card-text small mb-3">Hasta dónde llegarás.</p>
+
+              <a
+                *ngIf="!isLogged()"
+                class="btn btn-secondary btn-sm w-100 disabled"
+              >
+                Iniciá sesión para jugar
+              </a>
+              <a
+                *ngIf="isLogged()"
+                routerLink="/juegos/minmax"
+                class="btn btn-primary btn-sm w-100"
+              >
+                Jugar
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

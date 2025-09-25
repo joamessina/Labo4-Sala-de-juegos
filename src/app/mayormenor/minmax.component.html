@@ -1,43 +1,76 @@
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-loader" [fullScreen] = "true"><p style="color: white" > Cargando... </p></ngx-spinner>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-loader"
+  [fullScreen]="true"
+  ><p style="color: white">Cargando...</p></ngx-spinner
+>
 
-<div class="vh-100 d-flex justify-content-center align-items-center"> 
-<div class="container d-flex justify-content-center align-items-center">
-
-  <div class="alert-container" *ngIf="endOfGame" (click)="RootPath('home')">
-    <div class="alert alert-danger" role="alert">
-      Perdiste!
+<div class="vh-100 d-flex justify-content-center align-items-center">
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="alert-container" *ngIf="endOfGame" (click)="RootPath('home')">
+      <div class="alert alert-danger" role="alert">Perdiste!</div>
     </div>
-  </div>
 
-  <div class="row featurette">
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2 game-div">
+        <h2 class="featurette-heading fw-normal lh-1">
+          ¿Mayor o Menor?
+          <span class="text-body-secondary">Hasta donde llegaras.</span>
+        </h2>
+        <p class="lead">
+          En los Push your luck, los jugadores eligen hasta donde quieren
+          llegar. Tienen que decidir si se conforman con lo que tienen o
+          intentan conseguir más (recursos, puntos, tesoros...), pudiendo perder
+          todo lo ganado anteriormente. Mecánica divertidísima.
+        </p>
+      </div>
+      <div
+        class="col-md-5 order-md-1 d-flex justify-content-center align-items-center"
+      >
+        <div class="game-div">
+          <p>Puntuación: {{ puntuacion }}</p>
+          <p>Puntuación Maxima: {{ gameService.userPoints["minmax"] || 0 }}</p>
 
-    <div class="col-md-7 order-md-2 game-div">
-      <h2 class="featurette-heading fw-normal lh-1">¿Mayor o Menor? <span class="text-body-secondary">Hasta donde llegaras.</span></h2>
-      <p class="lead">En los Push your luck, los jugadores eligen hasta donde quieren llegar.
-        Tienen que decidir si se conforman con lo que tienen o intentan conseguir más
-        (recursos, puntos, tesoros...), pudiendo perder todo lo ganado anteriormente. Mecánica divertidísima.</p>
-    </div>
-    <div class="col-md-5 order-md-1 d-flex justify-content-center align-items-center">
+          <div class="container">
+            <img
+              src="assets/minmax/cardback.png"
+              alt="Poker Deck"
+              class="deck-image"
+            />
+            <img
+              src="assets/minmax/jokercard.jpg"
+              alt="Card"
+              class="card-image"
+              *ngIf="!currentCard"
+            />
+            <img
+              [src]="currentCard.img"
+              alt="Card"
+              class="draw-image"
+              *ngIf="currentCard"
+            />
+          </div>
 
-      <div class="game-div">
-        <p>Puntuación: {{puntuacion}}</p>
-        <p>Puntuación Maxima: {{gameService.userPoints.minmax}}</p>
-        <div class="container">
-          <img src="assets/minmax/cardback.png" alt="Poker Deck" class="deck-image">
-          <img src="assets/minmax/jokercard.jpg" alt="Card" class="card-image" *ngIf="!currentCard">
-          <img [src]="currentCard.img" alt="Card" class="draw-image" *ngIf="currentCard">
-        </div>
+          <div class="d-flex align-items-center justify-content-center">
+            <button
+              *ngIf="!currentCard"
+              (click)="getDeckOfCards()"
+              style="width: 100%"
+            >
+              Robar la primera Carta
+            </button>
 
-        <div class="d-flex align-items-center justify-content-center">
-          <button *ngIf="!currentCard" (click)="getDeckOfCards()" style="width: 100%;">Robar la primera Carta</button>
-
-          <button *ngIf="currentCard && !endOfGame" (click)="isSmaller()">Menor</button>
-          <button *ngIf="currentCard && !endOfGame" (click)="isBigger()">Mayor</button>
+            <button *ngIf="currentCard && !endOfGame" (click)="isSmaller()">
+              Menor
+            </button>
+            <button *ngIf="currentCard && !endOfGame" (click)="isBigger()">
+              Mayor
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
-
-</div>
 </div>

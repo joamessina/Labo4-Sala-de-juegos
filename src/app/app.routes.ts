@@ -21,6 +21,11 @@ export const routes: Routes = [
         (m) => m.HANGEDMAN_ROUTES
       ),
   },
+  {
+    path: 'juegos/minmax',
+    loadChildren: () =>
+      import('./pages/minmax/minmax.routes').then((m) => m.MINMAX_ROUTES),
+  },
 
   { path: '**', redirectTo: '' },
 ];
