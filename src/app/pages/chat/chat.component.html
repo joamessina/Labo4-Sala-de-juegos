@@ -1,0 +1,42 @@
+<div class="chat-card">
+  <div class="chat-header">
+    <strong>Chat general</strong>
+    <span class="me-pill" *ngIf="meEmail">{{ meEmail }}</span>
+  </div>
+
+  <div class="chat-body" #scrollBody>
+    <div
+      *ngFor="let m of msgs; trackBy: trackById"
+      class="msg-row"
+      [class.mine]="isMine(m)"
+    >
+      <div class="meta">
+        <span class="email">{{ m.email }}</span>
+        <span class="time">{{ formatTime(m.created_at) }}</span>
+      </div>
+      <div class="bubble">{{ m.text }}</div>
+    </div>
+
+    <div #listEnd></div>
+  </div>
+
+  <form class="chat-input" (ngSubmit)="send()">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Escribe un mensaje..."
+      [(ngModel)]="text"
+      name="text"
+      (keyup.enter)="send()"
+      [disabled]="sending"
+      autocomplete="off"
+    />
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="!text.trim() || sending"
+    >
+      {{ sending ? "Enviando…" : "Enviar" }}
+    </button>
+  </form>
+</div>

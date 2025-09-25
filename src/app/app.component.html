@@ -36,4 +36,13 @@
   </div>
 </nav>
 
+<a
+  *ngIf="isLogged()"
+  routerLink="/chat"
+  class="chat-fab"
+  title="Abrir chat"
+  aria-label="Abrir chat"
+  >💬</a
+>
+
 <router-outlet></router-outlet>

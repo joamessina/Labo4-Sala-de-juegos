@@ -1,0 +1,77 @@
+/* styles.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 2px solid #000;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.cell:hover {
+    background-color: #f9f9f9;
+}
+
+#status {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.game-div
+{
+    background-color: #E9ECEF;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+.alert-container {
+    position: absolute; /* Make the container position absolute */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the alert horizontally */
+    z-index: 1000; /* Ensure it appears above other elements */
+    cursor: pointer;
+  }
+  
+  .alert {
+    width: 50%; /* Full width for the alert */
+    text-align: center; /* Center text */
+    font-weight: 500;
+  }

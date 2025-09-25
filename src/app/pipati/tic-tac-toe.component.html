@@ -1,0 +1,43 @@
+<div class="vh-100 d-flex justify-content-center align-items-center"> 
+
+
+<div class="container d-flex justify-content-center align-items-center full-height">
+
+    <div class="alert-container" *ngIf="endOfGame && !userWins" (click)="RootPath('home')">
+        <div class="alert alert-danger" role="alert">
+          Perdiste!
+        </div>
+      </div>
+    <div class="alert-container" *ngIf="endOfGame && userWins" (click)="RootPath('home')">
+        <div class="alert alert-success" role="alert">
+          Victoria!
+        </div>
+      </div>
+
+    <div class="row featurette">
+        <div class="col-md-7 game-div">
+            <h2 class="featurette-heading fw-normal lh-1">Tic Tac Toe: <span class="text-body-secondary">Uno de los primeros juegos que aprendemos a jugar.</span></h2>
+            <p class="lead">Se cree que los chinos lo jugaban en la época de Confucio (500ac) y hay tableros tallados en los asientos de algunas Catedrales de Inglaterra donde éste juego se hizo popular en el siglo XIV. En la antigua Roma podemos encontrar un antecesor a este juego "el terni lapilli".</p>
+        </div>
+        <div class="col-md-5 game-div">
+    
+            <div class="game-container" #gameBoard>
+                <div class="grid">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+</div>

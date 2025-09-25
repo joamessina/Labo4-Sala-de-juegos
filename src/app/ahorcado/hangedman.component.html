@@ -1,0 +1,98 @@
+<div class="vh-100 d-flex justify-content-center align-items-center">
+  <div
+    class="container d-flex justify-content-center align-items-center full-height"
+  >
+    <div
+      class="alert-container"
+      *ngIf="endOfGame && guesses == 0"
+      (click)="RootPath('home')"
+    >
+      <div class="alert alert-danger" role="alert">Perdiste!</div>
+    </div>
+    <div
+      class="alert-container"
+      *ngIf="endOfGame && guesses > 0"
+      (click)="RootPath('home')"
+    >
+      <div class="alert alert-success" role="alert">Victoria!</div>
+    </div>
+
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2 game-div">
+        <h2 class="featurette-heading fw-normal lh-1">
+          El Ahorcado
+          <span class="text-body-secondary"
+            >Un ejercicio util para quienes quieran aprender un idioma.</span
+          >
+        </h2>
+        <p class="lead">
+          El ahorcado es un juego, originalmente de lápiz y papel, para dos o
+          más jugadores. Un jugador piensa en una palabra, frase u oración y el
+          otro trata de adivinarla según lo que sugiere por letras o dentro de
+          un cierto número de oportunidades.
+        </p>
+      </div>
+      <div class="col-md-5 order-md-1">
+        <div
+          class="hanged-man d-flex justify-content-center align-items-center"
+        >
+          <img *ngIf="guesses == 6" src="assets/hangedman/hm1.png" />
+          <img *ngIf="guesses == 5" src="assets/hangedman/hm2.png" />
+          <img *ngIf="guesses == 4" src="assets/hangedman/hm3.png" />
+          <img *ngIf="guesses == 3" src="assets/hangedman/hm4.png" />
+          <img *ngIf="guesses == 2" src="assets/hangedman/hm5.png" />
+          <img *ngIf="guesses == 1" src="assets/hangedman/hm6.png" />
+          <img *ngIf="guesses == 0" src="assets/hangedman/hm7.png" />
+
+          <div #wordGuesser>
+            <div id="word" class="wordGuesser"></div>
+            <div id="guesses-left" class="wordGuesser">
+              Intentos Restantes: <span id="guesses">6</span>
+            </div>
+            <div id="guesses-left" class="wordGuesser">
+              Puntuación Maxima:
+              <span id="guesses">{{
+                gameService.userPoints["hangedman"] || 0
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="keyboard justify-content-center" #keyboard>
+          <div class="justify-content-center">
+            <button class="key">Q</button>
+            <button class="key">W</button>
+            <button class="key">E</button>
+            <button class="key">R</button>
+            <button class="key">T</button>
+            <button class="key">Y</button>
+            <button class="key">U</button>
+            <button class="key">I</button>
+            <button class="key">O</button>
+            <button class="key">P</button>
+          </div>
+          <div class="justify-content-center">
+            <button class="key">A</button>
+            <button class="key">S</button>
+            <button class="key">D</button>
+            <button class="key">F</button>
+            <button class="key">G</button>
+            <button class="key">H</button>
+            <button class="key">J</button>
+            <button class="key">K</button>
+            <button class="key">L</button>
+          </div>
+          <div class="justify-content-center">
+            <button class="key">Z</button>
+            <button class="key">X</button>
+            <button class="key">C</button>
+            <button class="key">V</button>
+            <button class="key">B</button>
+            <button class="key">N</button>
+            <button class="key">M</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

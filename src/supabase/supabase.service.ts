@@ -16,11 +16,14 @@ export class SupabaseService {
           autoRefreshToken: true,
           detectSessionInUrl: true,
         },
+        realtime: { params: { eventsPerSecond: 5 } },
       }
     );
+
+    (window as any).__sb = this._client;
   }
 
-  get client(): SupabaseClient {
+  get client() {
     return this._client;
   }
 }

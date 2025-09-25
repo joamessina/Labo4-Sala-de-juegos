@@ -1,36 +1,40 @@
-import { Injectable } from '@angular/core';
+// src/app/auth/auth.service.ts
+import { Injectable, signal, computed } from '@angular/core';
 import {
-  createClient,
   SupabaseClient,
   Session,
   AuthChangeEvent,
+  User,
 } from '@supabase/supabase-js';
-import { environment } from '../enviroments/environment';
+import { SupabaseService } from '../supabase/supabase.service';
+
+export type SessionUser = { id: string; email: string };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private supa: SupabaseClient;
-  private _session: Session | null = null;
 
-  constructor() {
-    this.supa = createClient(
-      environment.supabase.url,
-      environment.supabase.anonKey,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-        },
+  private _user = signal<SessionUser | null>(null);
+  user = this._user;
+  isLoggedIn = computed(() => !!this._user());
+
+  constructor(private sb: SupabaseService) {
+    // ✅ usar SIEMPRE el cliente compartido
+    this.supa = sb.client;
+
+    // Estado inicial
+    this.supa.auth.getSession().then(({ data }) => {
+      const u = data.session?.user as User | null;
+      this._user.set(u ? { id: u.id, email: u.email! } : null);
+    });
+
+    // Cambios de sesión
+    this.supa.auth.onAuthStateChange(
+      (_e: AuthChangeEvent, session: Session | null) => {
+        const u = session?.user as User | null;
+        this._user.set(u ? { id: u.id, email: u.email! } : null);
       }
     );
-
-    this.supa.auth.getSession().then(({ data }) => {
-      this._session = data.session ?? null;
-    });
-    this.supa.auth.onAuthStateChange((_event: AuthChangeEvent, session) => {
-      this._session = session ?? null;
-    });
   }
 
   async login(email: string, password: string) {
@@ -39,6 +43,8 @@ export class AuthService {
       password,
     });
     if (error) throw error;
+    const u = data.user;
+    this._user.set(u ? { id: u.id, email: u.email! } : null);
     return data;
   }
 
@@ -59,16 +65,12 @@ export class AuthService {
   async logout() {
     const { error } = await this.supa.auth.signOut();
     if (error) throw error;
-  }
-
-  get user() {
-    return this._session?.user ?? null;
+    this._user.set(null);
   }
 
   getSession() {
     return this.supa.auth.getSession();
   }
-
   insertLoginLog(email: string) {
     return this.supa.from('login_logs').insert({ email });
   }

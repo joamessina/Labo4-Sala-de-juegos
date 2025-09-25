@@ -1,0 +1,57 @@
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  margin: 20px auto;
+}
+
+.keyboard div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.keyboard button {
+  padding: 1px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  font-family: monospace;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.keyboard button:active {
+  transform: scale(0.9);
+}
+
+.keyboard button:hover {
+  background-color: #e0e0e0;
+}
+
+.hanged-man img {
+  width: 200px;
+}
+
+.container {
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+
+.alert-container {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.alert {
+  width: 50%;
+  text-align: center;
+  font-weight: 500;
+}

@@ -9,5 +9,18 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'Login' },
   { path: 'register', component: RegisterComponent, title: 'Registro' },
   { path: 'quien-soy', component: QuienSoyComponent, title: 'Quién Soy' },
+  {
+    path: 'chat',
+    loadChildren: () =>
+      import('./pages/chat/chat.routes').then((m) => m.CHAT_ROUTES),
+  },
+  {
+    path: 'juegos/ahorcado',
+    loadChildren: () =>
+      import('./pages/hangedman/hangedman.route').then(
+        (m) => m.HANGEDMAN_ROUTES
+      ),
+  },
+
   { path: '**', redirectTo: '' },
 ];
