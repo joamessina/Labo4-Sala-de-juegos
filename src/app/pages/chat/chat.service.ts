@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import {
   RealtimeChannel,
   RealtimePostgresInsertPayload,
@@ -16,8 +16,9 @@ export type ChatMessage = {
 @Injectable({ providedIn: 'root' })
 export class ChatService {
   private channel?: RealtimeChannel;
+  private zone = inject(NgZone);
 
-  constructor(private zone: NgZone, private sb: SupabaseService) {}
+  constructor(private sb: SupabaseService) {}
 
   async fetchLast(limit = 80): Promise<ChatMessage[]> {
     const { data, error } = await this.sb.client
@@ -25,6 +26,18 @@ export class ChatService {
       .select('*')
       .order('created_at', { ascending: true })
       .limit(limit);
+
+    if (error) throw error;
+    return (data ?? []) as ChatMessage[];
+  }
+
+  async fetchSince(isoTs: string): Promise<ChatMessage[]> {
+    const { data, error } = await this.sb.client
+      .from('chat_messages')
+      .select('*')
+      .gt('created_at', isoTs)
+      .order('created_at', { ascending: true });
+
     if (error) throw error;
     return (data ?? []) as ChatMessage[];
   }
@@ -33,26 +46,28 @@ export class ChatService {
     const { data, error } = await this.sb.client
       .from('chat_messages')
       .insert([{ user_id, email, text }])
-      .select()
+      .select('*')
       .single();
+
     if (error) throw error;
     return data as ChatMessage;
   }
 
-  subscribe(onInsert: (msg: ChatMessage) => void) {
+  subscribe(onEvent: (msg: ChatMessage | null, status?: string) => void) {
     this.unsubscribe();
+
     this.channel = this.sb.client
-      .channel('chat-global')
+      .channel('realtime:public:chat_messages')
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'chat_messages' },
         (payload: RealtimePostgresInsertPayload<ChatMessage>) => {
-          console.log('[RT] payload', payload.new);
-          this.zone.run(() => onInsert(payload.new));
+          this.zone.run(() => onEvent(payload.new as ChatMessage));
         }
       )
       .subscribe((status, err) => {
         console.log('[Realtime] status:', status, 'err:', err ?? '');
+        this.zone.run(() => onEvent(null, status));
       });
   }
 

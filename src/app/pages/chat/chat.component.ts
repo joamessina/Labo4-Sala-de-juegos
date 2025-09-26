@@ -7,6 +7,7 @@ import {
   effect,
   DestroyRef,
   inject,
+  Injector,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,22 +31,26 @@ export class ChatComponent implements OnInit, OnDestroy {
   meEmail = '';
 
   private destroyRef = inject(DestroyRef);
+  private injector = inject(Injector);
 
   constructor(private chat: ChatService, private auth: AuthService) {
-    effect(() => {
-      const u = this.auth.user();
+    effect(
+      () => {
+        const u = this.auth.user();
 
-      this.chat.unsubscribe();
-      this.msgs = [];
+        this.chat.unsubscribe();
+        this.msgs = [];
 
-      if (!u) {
-        this.meEmail = '';
-        return;
-      }
+        if (!u) {
+          this.meEmail = '';
+          return;
+        }
 
-      this.meEmail = u.email!;
-      this.initRealtime();
-    });
+        this.meEmail = u.email!;
+        this.initRealtime();
+      },
+      { injector: this.injector }
+    );
   }
 
   async ngOnInit() {}
@@ -58,15 +63,44 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.scrollToBottom(true);
   }
 
+  private lastTs: string | null = null;
+
+  private setMsgs(list: ChatMessage[]) {
+    this.msgs = list;
+    this.lastTs = list.length ? list[list.length - 1].created_at : null;
+  }
+
   private async initRealtime() {
     try {
-      this.msgs = await this.chat.fetchLast(80);
+      const hist = await this.chat.fetchLast(80);
+      this.setMsgs(hist);
       this.scrollToBottom(true);
 
-      this.chat.subscribe((msg) => {
-        if (!this.msgs.some((m) => m.id === msg.id)) {
-          this.msgs = [...this.msgs, msg];
-          this.scrollToBottom(true);
+      this.chat.subscribe(async (msg, status) => {
+        if (status === 'SUBSCRIBED') {
+          if (this.lastTs) {
+            try {
+              const missed = await this.chat.fetchSince(this.lastTs);
+              if (missed.length) {
+                const merged = [...this.msgs];
+                for (const m of missed) {
+                  if (!merged.some((x) => x.id === m.id)) merged.push(m);
+                }
+                this.setMsgs(merged);
+                this.scrollToBottom(true);
+              }
+            } catch (e) {
+              console.warn('[Chat] backfill error:', e);
+            }
+          }
+          return;
+        }
+
+        if (msg) {
+          if (!this.msgs.some((m) => m.id === msg.id)) {
+            this.setMsgs([...this.msgs, msg]);
+            this.scrollToBottom(true);
+          }
         }
       });
     } catch (e) {
@@ -84,7 +118,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       const created = await this.chat.send(u.id, u.email!, trimmed);
 
       if (!this.msgs.some((m) => m.id === created.id)) {
-        this.msgs = [...this.msgs, created];
+        this.setMsgs([...this.msgs, created]);
         this.scrollToBottom(true);
       }
 
@@ -106,19 +140,42 @@ export class ChatComponent implements OnInit, OnDestroy {
     return d.toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
   }
 
+  private scrollLock = false;
+
   private scrollToBottom(force = false) {
-    // Usamos rAF para asegurarnos que las burbujas ya renderizaron
+    if (this.scrollLock) return;
+    this.scrollLock = true;
+
+    const body = this.scrollBody?.nativeElement;
+    const end = this.listEnd?.nativeElement;
+    if (!body) {
+      this.scrollLock = false;
+      return;
+    }
+
+    const nearBottom =
+      body.scrollTop + body.clientHeight >= body.scrollHeight - 24;
+
+    if (!force && !nearBottom) {
+      this.scrollLock = false;
+      return;
+    }
+
     requestAnimationFrame(() => {
-      const body = this.scrollBody?.nativeElement;
-      if (!body) return;
+      requestAnimationFrame(() => {
+        body.scrollTo({
+          top: body.scrollHeight,
+          behavior: force ? 'auto' : 'smooth',
+        });
 
-      // Método más confiable: setear scrollTop al final
-      body.scrollTop = body.scrollHeight;
+        body.scrollTop = Math.max(0, body.scrollHeight - body.clientHeight);
 
-      // “Ancla” extra por si el navegador necesita ayuda
-      this.listEnd?.nativeElement?.scrollIntoView({
-        block: 'end',
-        behavior: force ? 'auto' : 'smooth',
+        end?.scrollIntoView({ block: 'end' });
+
+        setTimeout(() => {
+          body.scrollTop = body.scrollHeight;
+          this.scrollLock = false;
+        }, 0);
       });
     });
   }

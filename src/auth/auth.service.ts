@@ -19,16 +19,13 @@ export class AuthService {
   isLoggedIn = computed(() => !!this._user());
 
   constructor(private sb: SupabaseService) {
-    // ✅ usar SIEMPRE el cliente compartido
     this.supa = sb.client;
 
-    // Estado inicial
     this.supa.auth.getSession().then(({ data }) => {
       const u = data.session?.user as User | null;
       this._user.set(u ? { id: u.id, email: u.email! } : null);
     });
 
-    // Cambios de sesión
     this.supa.auth.onAuthStateChange(
       (_e: AuthChangeEvent, session: Session | null) => {
         const u = session?.user as User | null;
@@ -63,9 +60,19 @@ export class AuthService {
   }
 
   async logout() {
-    const { error } = await this.supa.auth.signOut();
-    if (error) throw error;
-    this._user.set(null);
+    try {
+      const { error } = await this.supa.auth.signOut({ scope: 'local' });
+
+      if (error && error.name !== 'AuthSessionMissingError') {
+        throw error;
+      }
+    } catch (e: any) {
+      if (e?.name !== 'AuthSessionMissingError') {
+        console.error('Logout error:', e);
+      }
+    } finally {
+      this._user.set(null);
+    }
   }
 
   getSession() {
