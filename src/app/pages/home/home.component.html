@@ -109,7 +109,29 @@
               </a>
               <a
                 *ngIf="isLogged()"
-                routerLink="/juegos/minmax"
+                routerLink="/juegos/mayor-menor"
+                class="btn btn-primary btn-sm w-100"
+              >
+                Jugar
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="card h-100 bg-light border-0 compact-card">
+            <div class="card-body p-3">
+              <label class="form-label">Preguntados</label>
+              <p>Juego de adivinar personajes de Los Simpsons.</p>
+              <a
+                *ngIf="!isLogged()"
+                class="btn btn-secondary btn-sm w-100 disabled"
+              >
+                Iniciá sesión para jugar
+              </a>
+              <a
+                *ngIf="isLogged()"
+                routerLink="/juegos/preguntados"
                 class="btn btn-primary btn-sm w-100"
               >
                 Jugar

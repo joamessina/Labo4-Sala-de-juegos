@@ -17,115 +17,112 @@ import { Router } from '@angular/router';
   styleUrls: ['./hangedman.component.scss'],
 })
 export class HangedmanComponent implements AfterViewInit {
-  wordList: any = ['COLMENAS', 'ABEJA', 'PANAL', 'JUEGOS'];
-  word: string;
-  guesses: number = 6;
+  wordList: string[] = ['COLMENAS', 'ABEJA', 'PANAL', 'JUEGOS'];
+  word!: string;
+  wordChars: string[] = [];
+
+  guesses = 6;
   guessedLetters: string[] = [];
-  buttons: NodeListOf<HTMLButtonElement>;
-  guessers: NodeListOf<HTMLDivElement>;
 
-  puntuacion: number = 0;
-  endOfGame: boolean = false;
-  gameService = inject(GamesService);
-  rooter = inject(Router);
+  buttons!: NodeListOf<HTMLButtonElement>;
 
-  @ViewChild('keyboard') keyboard: ElementRef | undefined;
-  @ViewChild('wordGuesser') wordGuesser: ElementRef | undefined;
+  endOfGame = false;
+  puntuacion = 0;
+
+  private gameService = inject(GamesService);
+  private router = inject(Router);
+
+  @ViewChild('keyboard') keyboard?: ElementRef<HTMLDivElement>;
 
   constructor() {
-    let number = this.getRandomWord(0, 3);
-    this.word = this.wordList[number];
-    //this.guessedLetters = "";
-    this.buttons = document.querySelectorAll(
-      '.key'
-    ) as NodeListOf<HTMLButtonElement>;
-    this.guessers = document.querySelectorAll(
-      '.wordGuesser'
-    ) as NodeListOf<HTMLDivElement>;
+    this.startNewRound();
   }
 
   ngAfterViewInit() {
-    if (this.keyboard && this.wordGuesser) {
-      this.buttons = this.keyboard.nativeElement.querySelectorAll(
-        '.key'
-      ) as NodeListOf<HTMLButtonElement>;
-      this.guessers = this.wordGuesser.nativeElement.querySelectorAll(
-        '.wordGuesser'
-      ) as NodeListOf<HTMLDivElement>;
-
-      this.updateWordDisplay();
-      this.buttons.forEach((button) =>
-        button.addEventListener('click', this.handleClick.bind(this))
-      );
-    } else {
+    if (!this.keyboard) {
       console.error('keyboard not found in the DOM');
+      return;
     }
+    this.buttons = this.keyboard.nativeElement.querySelectorAll('.key');
+    this.buttons.forEach((btn) =>
+      btn.addEventListener('click', this.handleClick.bind(this))
+    );
 
     this.gameService.getPointsByGame('hangedman');
   }
 
-  handleClick(event: MouseEvent) {
-    const button = event.target as HTMLButtonElement;
-    console.log(button.textContent);
-    if (button.textContent) {
-      this.guessedLetters.push(button.textContent);
-      button.disabled = true;
-      if (!this.word.includes(button.textContent)) {
-        this.guesses -= 1;
-      }
-      this.updateWordDisplay();
-    }
-    //const index = parseInt(cell.getAttribute('data-index')!, 10);
+  private startNewRound() {
+    const idx = this.getRandomWord(0, this.wordList.length - 1);
+    this.word = this.wordList[idx];
+    this.wordChars = this.word.split('');
+    this.guesses = 6;
+    this.guessedLetters = [];
+    this.endOfGame = false;
   }
 
-  updateWordDisplay() {
-    this.guessers[0].textContent = '';
-    this.guessers[1].textContent = '';
+  private resetKeyboardUI() {
+    if (!this.buttons) return;
+    this.buttons.forEach((b) => {
+      b.disabled = false;
+      b.classList.remove('key--right', 'key--wrong');
+    });
+  }
 
-    const guessSpan = document.createElement('span');
-    guessSpan.textContent = 'Guesses restantes: ' + this.guesses.toString();
-    this.guessers[1].appendChild(guessSpan);
+  handleClick(event: MouseEvent) {
+    const button = event.target as HTMLButtonElement;
+    const letter = (button.textContent ?? '').toUpperCase();
+    if (!letter || this.guessedLetters.includes(letter)) return;
 
-    for (let i = 0; i < this.word.length; i++) {
-      const letterSpan = document.createElement('span');
-      if (this.guessedLetters.includes(this.word[i].toUpperCase())) {
-        letterSpan.textContent = this.word[i];
-      } else {
-        letterSpan.textContent = '_ ';
-      }
-      this.guessers[0].appendChild(letterSpan);
+    this.guessedLetters.push(letter);
+
+    if (this.word.includes(letter)) {
+      button.classList.add('key--right');
+    } else {
+      button.classList.add('key--wrong');
+      this.guesses -= 1;
     }
+
+    button.disabled = true;
     this.checkState();
   }
 
-  checkState() {
-    if (this.guesses == 0) {
-      console.log('You Lose');
+  private checkState() {
+    if (this.guesses <= 0) {
       this.endOfGame = true;
       this.disableButtons();
-    } else if (this.guessers[0].textContent == this.word) {
-      console.log('You Win');
+      return;
+    }
+
+    const allRevealed = this.wordChars.every((ch) =>
+      this.guessedLetters.includes(ch)
+    );
+    if (allRevealed) {
       const best = this.gameService.userPoints['hangedman'] ?? 0;
       if (best < this.guesses) {
         this.gameService.setGameInfo('hangedman', this.guesses);
       }
-
       this.endOfGame = true;
       this.disableButtons();
     }
   }
 
-  disableButtons() {
-    this.buttons.forEach((button) => (button.disabled = true));
+  private disableButtons() {
+    if (!this.buttons) return;
+    this.buttons.forEach((b) => (b.disabled = true));
   }
 
-  getRandomWord(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  playAgain() {
+    this.startNewRound();
+    this.resetKeyboardUI();
   }
 
   RootPath(path: string) {
-    this.rooter.navigate([path]);
+    this.router.navigate([path]);
     this.puntuacion = 0;
     this.endOfGame = false;
+  }
+
+  private getRandomWord(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }

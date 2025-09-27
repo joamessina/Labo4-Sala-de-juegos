@@ -1,95 +1,93 @@
-<div class="vh-100 d-flex justify-content-center align-items-center">
-  <div
-    class="container d-flex justify-content-center align-items-center full-height"
-  >
+<!-- Shell: ocupa la altura y centra el contenido -->
+<div class="hm-shell vh-100 d-flex justify-content-center align-items-center">
+  <!-- Tarjeta del juego -->
+  <div class="hm-container container-xxl">
+    <!-- Alertas de fin de juego (quedan arriba de la tarjeta) -->
     <div
       class="alert-container"
       *ngIf="endOfGame && guesses == 0"
       (click)="RootPath('home')"
     >
-      <div class="alert alert-danger" role="alert">Perdiste!</div>
+      <div class="alert alert-danger" role="alert">
+        ¡Perdiste! (click para volver)
+      </div>
     </div>
     <div
       class="alert-container"
       *ngIf="endOfGame && guesses > 0"
       (click)="RootPath('home')"
     >
-      <div class="alert alert-success" role="alert">Victoria!</div>
+      <div class="alert alert-success" role="alert">
+        ¡Victoria! (click para volver)
+      </div>
     </div>
 
-    <div class="row featurette">
-      <div class="col-md-7 order-md-2 game-div">
-        <h2 class="featurette-heading fw-normal lh-1">
-          El Ahorcado
-          <span class="text-body-secondary"
-            >Un ejercicio util para quienes quieran aprender un idioma.</span
-          >
-        </h2>
-        <p class="lead">
-          El ahorcado es un juego, originalmente de lápiz y papel, para dos o
-          más jugadores. Un jugador piensa en una palabra, frase u oración y el
-          otro trata de adivinarla según lo que sugiere por letras o dentro de
-          un cierto número de oportunidades.
-        </p>
-      </div>
-      <div class="col-md-5 order-md-1">
-        <div
-          class="hanged-man d-flex justify-content-center align-items-center"
-        >
-          <img *ngIf="guesses == 6" src="assets/hangedman/hm1.png" />
-          <img *ngIf="guesses == 5" src="assets/hangedman/hm2.png" />
-          <img *ngIf="guesses == 4" src="assets/hangedman/hm3.png" />
-          <img *ngIf="guesses == 3" src="assets/hangedman/hm4.png" />
-          <img *ngIf="guesses == 2" src="assets/hangedman/hm5.png" />
-          <img *ngIf="guesses == 1" src="assets/hangedman/hm6.png" />
-          <img *ngIf="guesses == 0" src="assets/hangedman/hm7.png" />
-
-          <div #wordGuesser>
-            <div id="word" class="wordGuesser"></div>
-            <div id="guesses-left" class="wordGuesser">
-              Intentos Restantes: <span id="guesses">6</span>
-            </div>
-            <div id="guesses-left" class="wordGuesser">
-              Puntuación Maxima:
-              <span id="guesses">{{
-                gameService.userPoints["hangedman"] || 0
-              }}</span>
-            </div>
-          </div>
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <div class="game-copy">
+          <h2 class="fw-bold mb-2">El Ahorcado</h2>
+          <p class="lead m-0">
+            El ahorcado es un juego, originalmente de lápiz y papel, para dos o
+            más jugadores. Un jugador piensa en una palabra, frase u oración y
+            el otro trata de adivinarla según lo que sugiere por letras o dentro
+            de un cierto número de oportunidades.
+          </p>
         </div>
+      </div>
 
-        <div class="keyboard justify-content-center" #keyboard>
-          <div class="justify-content-center">
-            <button class="key">Q</button>
-            <button class="key">W</button>
-            <button class="key">E</button>
-            <button class="key">R</button>
-            <button class="key">T</button>
-            <button class="key">Y</button>
-            <button class="key">U</button>
-            <button class="key">I</button>
-            <button class="key">O</button>
-            <button class="key">P</button>
+      <!-- Dibujo + palabra + teclado -->
+      <div class="col-lg-6 order-lg-1">
+        <div class="hang-wrap">
+          <div
+            class="hanged-man d-flex justify-content-center align-items-center"
+          >
+            <img *ngIf="guesses == 6" src="assets/hangedman/hm1.png" />
+            <img *ngIf="guesses == 5" src="assets/hangedman/hm2.png" />
+            <img *ngIf="guesses == 4" src="assets/hangedman/hm3.png" />
+            <img *ngIf="guesses == 3" src="assets/hangedman/hm4.png" />
+            <img *ngIf="guesses == 2" src="assets/hangedman/hm5.png" />
+            <img *ngIf="guesses == 1" src="assets/hangedman/hm6.png" />
+            <img *ngIf="guesses == 0" src="assets/hangedman/hm7.png" />
           </div>
-          <div class="justify-content-center">
-            <button class="key">A</button>
-            <button class="key">S</button>
-            <button class="key">D</button>
-            <button class="key">F</button>
-            <button class="key">G</button>
-            <button class="key">H</button>
-            <button class="key">J</button>
-            <button class="key">K</button>
-            <button class="key">L</button>
+
+          <div class="word-panel">
+            <div class="word-row"></div>
+            <div class="status-row">
+              Intentos restantes: <strong>{{ guesses }}</strong>
+            </div>
           </div>
-          <div class="justify-content-center">
-            <button class="key">Z</button>
-            <button class="key">X</button>
-            <button class="key">C</button>
-            <button class="key">V</button>
-            <button class="key">B</button>
-            <button class="key">N</button>
-            <button class="key">M</button>
+
+          <!-- FILA DE CASILLAS DE LA PALABRA -->
+          <div class="word-row" aria-label="Casillas de la palabra">
+            <span class="slot" *ngFor="let ch of wordChars">
+              <span class="letter">{{
+                guessedLetters.includes(ch) ? ch : ""
+              }}</span>
+            </span>
+          </div>
+
+          <div class="keyboard" #keyboard aria-label="Teclado del juego">
+            <div class="key-row">
+              <button class="key">Q</button><button class="key">W</button
+              ><button class="key">E</button> <button class="key">R</button
+              ><button class="key">T</button><button class="key">Y</button>
+              <button class="key">U</button><button class="key">I</button
+              ><button class="key">O</button>
+              <button class="key">P</button>
+            </div>
+            <div class="key-row">
+              <button class="key">A</button><button class="key">S</button
+              ><button class="key">D</button> <button class="key">F</button
+              ><button class="key">G</button><button class="key">H</button>
+              <button class="key">J</button><button class="key">K</button
+              ><button class="key">L</button>
+            </div>
+            <div class="key-row">
+              <button class="key">Z</button><button class="key">X</button
+              ><button class="key">C</button> <button class="key">V</button
+              ><button class="key">B</button><button class="key">N</button>
+              <button class="key">M</button>
+            </div>
           </div>
         </div>
       </div>

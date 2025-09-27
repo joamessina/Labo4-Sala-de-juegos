@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 
-export function canActivate() {
+export const chatGuard: CanActivateFn = (_route, state) => {
   const auth = inject(AuthService);
   const router = inject(Router);
-  if (!auth.user()) {
-    router.navigateByUrl('/login');
-    return false;
-  }
-  return true;
-}
+
+  if (!!auth.user()) return true;
+
+  router.navigate(['/login'], { queryParams: { redirect: state.url } });
+  return false;
+};

@@ -1,0 +1,128 @@
+h2 {
+  color: white;
+  text-align: center;
+  font-family: "Comic Neue", cursive;
+  font-style: italic;
+}
+
+.botonJuegoNuevo {
+  padding-top: 0%;
+  padding-bottom: 5px;
+}
+
+.contenedorPrincipal {
+  background-color: #b4e5f1;
+  width: 75vw;
+  min-height: 65vh; /* <- antes height fija; ahora min-height para que no se corte */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 4.5px solid white;
+  padding: 16px 20px;
+}
+
+.panel-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.separarElementos {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  align-items: stretch;
+  flex: 1 1 auto; /* ocupa el resto del alto disponible */
+}
+
+.contenedorAnuncios {
+  flex: 0 0 360px;
+}
+.contenedorOpciones {
+  flex: 0 0 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.puntajeLabel,
+.jugadasRestantesLabel {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #05356b;
+  margin-bottom: 30px;
+  font-size: 1.7rem;
+}
+
+.contenedorImagen {
+  flex: 1 1 520px; /* crece y se achica según espacio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tarjeta {
+  width: clamp(320px, 40vw, 560px);
+  aspect-ratio: 1 / 1; /* cuadrada */
+  max-height: 52vh; /* no supera el panel */
+  border: 2px solid #05356b;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.tarjeta-title {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.tarjeta img {
+  display: block;
+  width: 85%; /* antes 40% */
+  height: 85%; /* agregamos */
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.contenedorOpciones {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.botonOpcion {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.botonOpcion:hover {
+  background-color: #0056b3;
+}

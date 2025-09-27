@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { canActivate } from './chat.guard';
+import { chatGuard } from '../chat/chat.guard'; // ajustá la ruta
 
 export const CHAT_ROUTES: Routes = [
   {
     path: '',
-    canActivate: [canActivate],
+    canActivate: [chatGuard],
     loadComponent: () =>
       import('./chat.component').then((m) => m.ChatComponent),
   },

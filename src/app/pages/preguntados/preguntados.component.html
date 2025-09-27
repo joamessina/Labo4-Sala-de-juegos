@@ -1,0 +1,46 @@
+<h2>PREGUNTADOS</h2>
+
+<div class="contenedorPrincipal">
+  <!-- Botón arriba a la derecha -->
+  <div class="panel-header">
+    <button class="btn btn-primary" (click)="cargarJuegoNuevo()">
+      Jugar de nuevo
+    </button>
+  </div>
+
+  <!-- Fila principal (UNA sola, sin duplicados) -->
+  <div *ngIf="personajeAAdivinar" class="separarElementos">
+    <!-- Columna: puntaje -->
+    <div class="contenedorAnuncios">
+      <label class="puntajeLabel">Puntos: {{ puntosJugador }}</label>
+      <label class="jugadasRestantesLabel">
+        Te quedan {{ cantidadDeJugadas - contadorDeJugadas }} jugadas
+      </label>
+    </div>
+
+    <!-- Columna: imagen -->
+    <div class="contenedorImagen">
+      <div class="tarjeta">
+        <div class="tarjeta-title">¿Quién es este personaje?</div>
+        <img
+          [src]="personajeAAdivinar.image"
+          alt="imagen de personaje"
+          loading="lazy"
+          (error)="onImgError($event)"
+        />
+      </div>
+    </div>
+
+    <!-- Columna: opciones -->
+    <div class="contenedorOpciones">
+      <button
+        *ngFor="let opcion of opciones"
+        [disabled]="botonesDeshabilitados"
+        (click)="verificarRespuesta(opcion)"
+        class="botonOpcion"
+      >
+        {{ opcion }}
+      </button>
+    </div>
+  </div>
+</div>
