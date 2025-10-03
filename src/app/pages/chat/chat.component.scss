@@ -114,3 +114,16 @@
   max-height: 60vh;
   overflow-y: auto;
 }
+
+.help-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0 8px;
+}
+.counter {
+  color: #6b7280;
+}
+.error {
+  color: #dc2626;
+  font-weight: 600;
+}

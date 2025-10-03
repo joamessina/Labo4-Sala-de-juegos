@@ -26,6 +26,7 @@ export class LoginComponent {
   form!: FormGroup<LoginForm>;
   loading = false;
   errorMsg = '';
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -44,17 +45,31 @@ export class LoginComponent {
     });
   }
 
+  get f() {
+    return this.form.controls;
+  }
+
   async ingresar() {
-    if (this.form.invalid || this.loading) return;
-    this.loading = true;
+    this.submitted = true;
     this.errorMsg = '';
+
+    if (this.form.invalid || this.loading) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading = true;
     const { email, password } = this.form.getRawValue();
     try {
       await this.auth.login(email, password);
       await this.auth.insertLoginLog(email);
       this.router.navigateByUrl('/');
     } catch (e: any) {
-      this.errorMsg = e?.message ?? 'Error de login';
+      const msg = (e?.message || '').toLowerCase();
+      this.errorMsg =
+        msg.includes('invalid') || msg.includes('credentials')
+          ? 'Email o contraseña incorrectos.'
+          : e?.message ?? 'Error de login';
     } finally {
       this.loading = false;
     }
@@ -62,5 +77,6 @@ export class LoginComponent {
 
   completar(email: string, pass: string) {
     this.form.setValue({ email, password: pass });
+    this.submitted = false;
   }
 }

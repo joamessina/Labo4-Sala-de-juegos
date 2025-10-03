@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { chatGuard } from '../chat/chat.guard'; // ajustá la ruta
+import { chatGuard } from '../chat/chat.guard';
 
 export const CHAT_ROUTES: Routes = [
   {

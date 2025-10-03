@@ -31,6 +31,15 @@ const routes: Routes = [
         canActivate: [chatGuard],
       },
 
+      {
+        path: 'blackjack',
+        loadComponent: () =>
+          import('../blackjack/blackjack.component').then(
+            (m) => m.BlackjackComponent
+          ),
+        canActivate: [chatGuard],
+      },
+
       { path: 'minmax', redirectTo: 'mayor-menor', pathMatch: 'full' },
 
       { path: '', redirectTo: 'preguntados', pathMatch: 'full' },

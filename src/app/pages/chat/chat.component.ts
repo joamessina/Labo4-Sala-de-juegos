@@ -24,11 +24,14 @@ import { AuthService } from '../../../auth/auth.service';
 export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('listEnd') listEnd!: ElementRef<HTMLDivElement>;
   @ViewChild('scrollBody') scrollBody!: ElementRef<HTMLDivElement>;
+  @ViewChild('msgInput') msgInput!: ElementRef<HTMLInputElement>;
 
   msgs: ChatMessage[] = [];
   text = '';
   sending = false;
   meEmail = '';
+  MAX_LEN = 255;
+  submitted = false;
 
   private destroyRef = inject(DestroyRef);
   private injector = inject(Injector);
@@ -109,19 +112,28 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   async send() {
-    const trimmed = this.text.trim();
+    this.submitted = true;
+
+    const trimmed = (this.text ?? '').trim();
     const u = this.auth.user();
-    if (!trimmed || this.sending || !u) return;
+
+    if (!trimmed || this.sending || !u) {
+      setTimeout(() => this.msgInput?.nativeElement?.focus(), 0);
+      return;
+    }
+
+    this.submitted = false;
+
+    const MAX = 255;
+    const safe = trimmed.length > MAX ? trimmed.slice(0, MAX) : trimmed;
 
     this.sending = true;
     try {
-      const created = await this.chat.send(u.id, u.email!, trimmed);
-
+      const created = await this.chat.send(u.id, u.email!, safe);
       if (!this.msgs.some((m) => m.id === created.id)) {
         this.setMsgs([...this.msgs, created]);
         this.scrollToBottom(true);
       }
-
       this.text = '';
     } finally {
       this.sending = false;

@@ -26,10 +26,36 @@
             </ul>
 
             <h5 class="mb-2">Juego propio</h5>
-            <p class="text-muted">
-              Todavia no pense en uno, en cuanto tenga uno en mente lo colocare
-              aqui con detalles.
+            <h3>Juego propio: Blackjack</h3>
+            <p>
+              Implementé el clásico <strong>Blackjack</strong> usando la API
+              pública <em>deckofcardsapi.com</em>. El objetivo es sumar
+              <strong>21</strong> o quedar lo más cerca posible sin pasarse. Las
+              figuras valen 10, los ases valen 11 pero pueden pasar a 1 si te
+              excedés de 21 (ajuste automático).
             </p>
+            <p>Flujo del juego:</p>
+            <ul>
+              <li>
+                Se reparte una mano inicial: dos cartas para el jugador y dos
+                para la banca.
+              </li>
+              <li>
+                El jugador puede <strong>Pedir</strong> (robar una carta) o
+                <strong>Plantarse</strong>.
+              </li>
+              <li>
+                Cuando el jugador se planta, la banca roba hasta llegar a 17 o
+                más.
+              </li>
+              <li>
+                Gana quien quede más cerca de 21 sin pasarse. Si alguno supera
+                21, pierde.
+              </li>
+              <li>
+                Blackjack (21 con dos cartas) gana automáticamente salvo empate.
+              </li>
+            </ul>
           </div>
         </div>
       </div>

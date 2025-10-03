@@ -2,22 +2,31 @@
   <div class="card shadow p-4" style="width: 400px">
     <h2 class="text-center mb-4">Login</h2>
 
-    <form [formGroup]="form" (ngSubmit)="ingresar()">
+    <form [formGroup]="form" (ngSubmit)="ingresar()" novalidate>
       <!-- Email -->
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
         <input
-          type="email"
           id="email"
+          type="email"
           formControlName="email"
           class="form-control"
           placeholder="tu@email.com"
+          [class.is-invalid]="submitted && f.email.invalid"
+          aria-describedby="emailHelp"
+          [attr.aria-invalid]="submitted && f.email.invalid ? 'true' : null"
         />
         <div
-          *ngIf="form.controls.email.invalid && form.controls.email.touched"
-          class="text-danger small"
+          id="emailHelp"
+          class="invalid-feedback"
+          *ngIf="submitted && f.email.errors"
         >
-          Ingresá un email válido
+          <span *ngIf="f.email.errors?.['required']"
+            >El email es obligatorio.</span
+          >
+          <span *ngIf="f.email.errors?.['email']"
+            >Ingresá un email válido.</span
+          >
         </div>
       </div>
 
@@ -25,19 +34,26 @@
       <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
         <input
-          type="password"
           id="password"
+          type="password"
           formControlName="password"
           class="form-control"
           placeholder="mínimo 6 caracteres"
+          [class.is-invalid]="submitted && f.password.invalid"
+          aria-describedby="passHelp"
+          [attr.aria-invalid]="submitted && f.password.invalid ? 'true' : null"
         />
         <div
-          *ngIf="
-            form.controls.password.invalid && form.controls.password.touched
-          "
-          class="text-danger small"
+          id="passHelp"
+          class="invalid-feedback"
+          *ngIf="submitted && f.password.errors"
         >
-          La contraseña debe tener al menos 6 caracteres
+          <span *ngIf="f.password.errors?.['required']"
+            >La contraseña es obligatoria.</span
+          >
+          <span *ngIf="f.password.errors?.['minlength']"
+            >Debe tener al menos 6 caracteres.</span
+          >
         </div>
       </div>
 
@@ -59,14 +75,19 @@
         </button>
       </div>
 
+      <!-- Mensaje de error del login -->
+      <div
+        *ngIf="errorMsg"
+        class="text-danger small mb-2"
+        role="alert"
+        aria-live="polite"
+      >
+        {{ errorMsg }}
+      </div>
+
       <!-- Botón -->
-      <div *ngIf="errorMsg" class="text-danger small mb-2">{{ errorMsg }}</div>
       <div class="d-grid">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="form.invalid || loading"
-        >
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
           {{ loading ? "Ingresando..." : "Ingresar" }}
         </button>
       </div>

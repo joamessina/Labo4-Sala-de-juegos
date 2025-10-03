@@ -20,21 +20,34 @@
     <div #listEnd></div>
   </div>
 
-  <form class="chat-input" (ngSubmit)="send()">
+  <form class="chat-input" (ngSubmit)="send()" novalidate>
     <input
       type="text"
       class="form-control"
-      placeholder="Escribe un mensaje..."
+      placeholder="Escribe un mensaje…"
       [(ngModel)]="text"
       name="text"
+      #msg="ngModel"
+      #msgInput
+      required
+      maxlength="255"
+      (input)="submitted = false"
       (keyup.enter)="send()"
       [disabled]="sending"
       autocomplete="off"
     />
+
+    <div class="help-row">
+      <small class="counter">{{ text.length || 0 }}/255</small>
+      <small class="error" *ngIf="submitted && msg.invalid">
+        El mensaje no puede estar vacío.
+      </small>
+    </div>
+
     <button
       class="btn btn-primary"
       type="submit"
-      [disabled]="!text.trim() || sending"
+      [disabled]="sending || !text.trim().length"
     >
       {{ sending ? "Enviando…" : "Enviar" }}
     </button>

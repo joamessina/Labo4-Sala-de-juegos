@@ -28,6 +28,7 @@ export class RegisterComponent {
   loading = false;
   errorMsg = '';
   successMsg = '';
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,10 +51,20 @@ export class RegisterComponent {
     });
   }
 
+  get f() {
+    return this.form.controls;
+  }
+
   async submit() {
-    if (this.form.invalid || this.loading) return;
+    this.submitted = true;
+    if (this.form.invalid || this.loading) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     this.loading = true;
     this.errorMsg = '';
+
     const { displayName, email, password } = this.form.getRawValue();
     try {
       await this.auth.register(email, password, displayName);
@@ -62,7 +73,7 @@ export class RegisterComponent {
       const msg = (e?.message || '').toLowerCase();
       this.errorMsg = msg.includes('already registered')
         ? 'El usuario ya está registrado.'
-        : e?.message ?? 'Error al registrar';
+        : e?.message ?? 'Error al registrar.';
     } finally {
       this.loading = false;
     }

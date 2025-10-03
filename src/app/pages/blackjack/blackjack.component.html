@@ -1,0 +1,95 @@
+<div class="bj-shell">
+  <div class="bj-table">
+    <header class="bj-head">
+      <h2>BLACKJACK</h2>
+
+      <div class="head-actions">
+        <button class="btn btn-primary btn-sm" (click)="reset()">
+          Jugar de nuevo
+        </button>
+        <button class="btn btn-outline-light btn-sm" (click)="goHome()">
+          Home
+        </button>
+      </div>
+    </header>
+
+    <section class="bj-row">
+      <div class="bj-col">
+        <h3>Banca</h3>
+
+        <div class="cards">
+          <img
+            *ngIf="dealer[0]"
+            class="card"
+            [src]="img(dealer[0])"
+            alt="Carta de banca"
+          />
+
+          <ng-container *ngIf="dealerHole; else showSecond">
+            <img
+              class="card"
+              src="assets/minmax/cardback.png"
+              alt="Carta tapada"
+            />
+          </ng-container>
+
+          <ng-template #showSecond>
+            <img
+              *ngIf="dealer[1]"
+              class="card"
+              [src]="img(dealer[1])"
+              alt="Carta de banca"
+            />
+          </ng-template>
+
+          <img
+            *ngFor="let c of dealer.slice(2)"
+            class="card"
+            [src]="img(c)"
+            alt="Carta de banca"
+          />
+        </div>
+      </div>
+
+      <div class="bj-col score">
+        <span>{{ revealDealer ? total(dealer) : "??" }}</span>
+      </div>
+    </section>
+
+    <section class="bj-row">
+      <div class="bj-col">
+        <h3>Jugador</h3>
+        <div class="cards">
+          <img
+            *ngFor="let c of player"
+            class="card"
+            [src]="c.images?.png || c.image"
+            alt="Carta del jugador"
+          />
+        </div>
+
+        <div class="actions">
+          <button
+            class="btn btn-success"
+            (click)="hit()"
+            [disabled]="ended || total(player) >= 21"
+          >
+            Pedir
+          </button>
+
+          <button class="btn btn-warning" (click)="stand()" [disabled]="ended">
+            Plantarse
+          </button>
+        </div>
+      </div>
+
+      <div class="bj-col score">
+        <span>{{ total(player) }}</span>
+      </div>
+    </section>
+
+    <footer *ngIf="message" class="status">
+      {{ message }}
+    </footer>
+  </div>
+</div>
