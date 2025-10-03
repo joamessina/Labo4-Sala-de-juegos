@@ -1,60 +1,72 @@
 .container {
-    display: flex;
-    gap: 20px;
-    background-color: #E9ECEF;
-    padding: 5px;
-    border-radius: 10px;
-  }
+  display: flex;
+  gap: 20px;
+  background-color: #e9ecef;
+  padding: 5px;
+  border-radius: 10px;
+}
 
+.deck-image,
+.card-image {
+  max-width: 150px;
+  max-height: 200px;
+  border: 1px solid black;
+  padding: 2px;
+  border-radius: 2px;
+  margin: 2px;
+}
 
-  
-  .deck-image, .card-image {
-    max-width: 150px;
-    max-height: 200px;
-    border: 1px solid black;
-    padding: 2px;
-    border-radius: 2px;
-    margin: 2px;
-  }
+.draw-image {
+  max-width: 150px;
+  max-height: 200px;
+  padding: 2px;
+  margin: 2px;
+}
 
-  .draw-image{
-    max-width: 150px;
-    max-height: 200px;
-    padding: 2px;
-    margin: 2px;
-  }
-  
-  button {
-    border-radius: 5px;
-    margin: 5px;
-    width: 50%;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  button:active
-  {
-    transform: scale(0.9);
-  }
+button {
+  border-radius: 5px;
+  margin: 5px;
+  width: 50%;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:active {
+  transform: scale(0.9);
+}
 
+.alert-container {
+  position: absolute; /* Make the container position absolute */
+  left: 0; /* Align to the left */
+  width: 100%; /* Full width */
+  display: flex; /* Use flexbox for alignment */
+  justify-content: center; /* Center the alert horizontally */
+  z-index: 1000; /* Ensure it appears above other elements */
+  cursor: pointer;
+}
 
+.alert {
+  width: 50%; /* Full width for the alert */
+  text-align: center; /* Center text */
+  font-weight: 500;
+}
 
-  .alert-container {
-    position: absolute; /* Make the container position absolute */
-    left: 0; /* Align to the left */
-    width: 100%; /* Full width */
-    display: flex; /* Use flexbox for alignment */
-    justify-content: center; /* Center the alert horizontally */
-    z-index: 1000; /* Ensure it appears above other elements */
-    cursor: pointer;
-  }
-  
-  .alert {
-    width: 50%; /* Full width for the alert */
-    text-align: center; /* Center text */
-    font-weight: 500;
-  }
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 1050;
+}
 
+.endcard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 20px;
+  min-width: 280px;
+  text-align: center;
+}

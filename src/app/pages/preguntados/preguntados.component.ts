@@ -24,7 +24,7 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   public cantidadDeOpciones: number = 4;
   public puntosJugador: number = 0;
   public contadorDeJugadas: number = 0;
-  public cantidadDeJugadas: number = 3;
+  public cantidadDeJugadas: number = 1;
   public indiceActual: number = 0;
   public mensaje!: string;
   public botonesDeshabilitados: boolean = false;
@@ -149,15 +149,22 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
           text: texto,
           icon: icono,
           showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: 'Cerrar',
           confirmButtonText: 'Jugar de nuevo',
+          cancelButtonText: 'Volver al Home',
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'swal2-btn swal2-btn--primary',
+            cancelButton: 'swal2-btn swal2-btn--outline',
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             this.cargarJuegoNuevo();
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.authenticationService?.user();
+            this.resultadosService;
+            window.location.href = '/home';
           }
         });
-        break;
     }
   }
 

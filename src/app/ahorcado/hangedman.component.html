@@ -3,22 +3,31 @@
   <!-- Tarjeta del juego -->
   <div class="hm-container container-xxl">
     <!-- Alertas de fin de juego (quedan arriba de la tarjeta) -->
-    <div
-      class="alert-container"
-      *ngIf="endOfGame && guesses == 0"
-      (click)="RootPath('home')"
-    >
-      <div class="alert alert-danger" role="alert">
-        ¡Perdiste! (click para volver)
-      </div>
-    </div>
-    <div
-      class="alert-container"
-      *ngIf="endOfGame && guesses > 0"
-      (click)="RootPath('home')"
-    >
-      <div class="alert alert-success" role="alert">
-        ¡Victoria! (click para volver)
+
+    <!-- Overlay / Modal de fin de juego -->
+    <div class="overlay" *ngIf="endOfGame">
+      <div class="endcard shadow">
+        <h5
+          class="title"
+          [class.text-success]="guesses > 0"
+          [class.text-danger]="guesses <= 0"
+        >
+          {{ guesses > 0 ? "¡Victoria!" : "¡Perdiste!" }}
+        </h5>
+
+        <!-- Muestra la palabra si perdió -->
+        <p class="muted" *ngIf="guesses <= 0">
+          La palabra era: <strong>{{ word }}</strong>
+        </p>
+
+        <div class="actions">
+          <button class="btn btn-primary btn-sm" (click)="playAgain()">
+            Jugar de nuevo
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" (click)="goHome()">
+            Volver al Home
+          </button>
+        </div>
       </div>
     </div>
 

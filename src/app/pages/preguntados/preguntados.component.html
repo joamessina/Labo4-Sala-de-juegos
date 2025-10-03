@@ -1,46 +1,51 @@
-<h2>PREGUNTADOS</h2>
-
-<div class="contenedorPrincipal">
-  <!-- Botón arriba a la derecha -->
-  <div class="panel-header">
-    <button class="btn btn-primary" (click)="cargarJuegoNuevo()">
-      Jugar de nuevo
-    </button>
-  </div>
-
-  <!-- Fila principal (UNA sola, sin duplicados) -->
-  <div *ngIf="personajeAAdivinar" class="separarElementos">
-    <!-- Columna: puntaje -->
-    <div class="contenedorAnuncios">
-      <label class="puntajeLabel">Puntos: {{ puntosJugador }}</label>
-      <label class="jugadasRestantesLabel">
-        Te quedan {{ cantidadDeJugadas - contadorDeJugadas }} jugadas
-      </label>
-    </div>
-
-    <!-- Columna: imagen -->
-    <div class="contenedorImagen">
-      <div class="tarjeta">
-        <div class="tarjeta-title">¿Quién es este personaje?</div>
-        <img
-          [src]="personajeAAdivinar.image"
-          alt="imagen de personaje"
-          loading="lazy"
-          (error)="onImgError($event)"
-        />
-      </div>
-    </div>
-
-    <!-- Columna: opciones -->
-    <div class="contenedorOpciones">
-      <button
-        *ngFor="let opcion of opciones"
-        [disabled]="botonesDeshabilitados"
-        (click)="verificarRespuesta(opcion)"
-        class="botonOpcion"
-      >
-        {{ opcion }}
+<div class="pq-shell">
+  <div class="pq-card">
+    <!-- header -->
+    <div class="pq-head">
+      <h2 class="pq-title">Preguntados</h2>
+      <button class="btn btn-primary btn-sm" (click)="cargarJuegoNuevo()">
+        Jugar de nuevo
       </button>
+    </div>
+
+    <!-- layout principal -->
+    <div *ngIf="personajeAAdivinar" class="pq-main">
+      <!-- stats -->
+      <aside class="pq-side">
+        <div class="stat">
+          <span class="label">Puntos </span>
+          <span class="value">{{ puntosJugador }}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Jugadas </span>
+          <span class="value">{{ cantidadDeJugadas - contadorDeJugadas }}</span>
+        </div>
+      </aside>
+
+      <!-- imagen + opciones abajo -->
+      <div class="pq-center">
+        <figure class="pq-figure">
+          <figcaption>¿Quién es este personaje?</figcaption>
+          <img
+            [src]="personajeAAdivinar.image"
+            alt="Personaje de Los Simpsons"
+            loading="lazy"
+            (error)="onImgError($event)"
+          />
+        </figure>
+
+        <!-- botones debajo de la imagen -->
+        <nav class="pq-options">
+          <button
+            class="pq-btn"
+            *ngFor="let opcion of opciones"
+            [disabled]="botonesDeshabilitados"
+            (click)="verificarRespuesta(opcion)"
+          >
+            {{ opcion }}
+          </button>
+        </nav>
+      </div>
     </div>
   </div>
 </div>

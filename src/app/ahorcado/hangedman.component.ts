@@ -114,12 +114,11 @@ export class HangedmanComponent implements AfterViewInit {
   playAgain() {
     this.startNewRound();
     this.resetKeyboardUI();
+    this.endOfGame = false;
   }
 
-  RootPath(path: string) {
-    this.router.navigate([path]);
-    this.puntuacion = 0;
-    this.endOfGame = false;
+  goHome() {
+    this.router.navigate(['/']);
   }
 
   private getRandomWord(min: number, max: number): number {

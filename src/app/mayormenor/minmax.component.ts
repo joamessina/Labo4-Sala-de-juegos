@@ -30,23 +30,28 @@ export class MinmaxComponent implements OnInit {
 
   puntuacion = 0;
   endOfGame = false;
+  endMsg = '';
 
   async ngOnInit() {
+    await this.initGame();
+  }
+
+  private async initGame() {
     this.spinner.show();
     try {
+      this.endOfGame = false;
+      this.puntuacion = 0;
+
       await this.gameService.getPointsByGame('minmax');
 
-      // 1) crear mazo
-      this.deck = await this.getDeck(); // <-- ahora sí existe this.deck
+      this.deck = await this.getDeck();
 
-      // 2) traer 52 cartas y normalizarlas
       const deckData = await this.getAllCards();
       this.normalizedDeck = deckData.map((card) => ({
         img: card.images.png,
         value: this.formatValue(card.value),
       }));
 
-      // 3) setear carta actual
       this.currentCard = this.normalizedDeck[52 - this.deck.remaining];
       this.deck.remaining -= 1;
     } catch (e) {
@@ -127,7 +132,8 @@ export class MinmaxComponent implements OnInit {
       this.puntuacion += 1;
     } else {
       this.endOfGame = true;
-      const best = this.gameService.userPoints['minmax'] ?? 0; // 👈 corchetes
+      this.endMsg = '¡Perdiste!';
+      const best = this.gameService.userPoints['minmax'] ?? 0;
       if (best < this.puntuacion) {
         this.gameService.setGameInfo('minmax', this.puntuacion);
       }
@@ -143,16 +149,19 @@ export class MinmaxComponent implements OnInit {
       this.puntuacion += 1;
     } else {
       this.endOfGame = true;
-      const best = this.gameService.userPoints['minmax'] ?? 0; // 👈 corchetes
+      this.endMsg = '¡Perdiste!';
+      const best = this.gameService.userPoints['minmax'] ?? 0;
       if (best < this.puntuacion) {
         this.gameService.setGameInfo('minmax', this.puntuacion);
       }
     }
   }
 
-  RootPath(path: string) {
-    this.rooter.navigate([path]);
-    this.puntuacion = 0;
-    this.endOfGame = false;
+  playAgain() {
+    this.initGame();
+  }
+
+  goHome() {
+    this.rooter.navigate(['/']);
   }
 }

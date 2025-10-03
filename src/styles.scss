@@ -72,3 +72,45 @@ button:hover:not(:disabled) {
   border-radius: 8px;
   backdrop-filter: blur(6px); // efecto "vidrio esmerilado"
 }
+
+/* Espaciado y layout de los botones */
+.swal2-actions {
+  margin-top: 20px !important;
+  gap: 14px !important;
+  justify-content: center;
+}
+
+/* Tamaño base (aplica a ambos) */
+.swal2-styled {
+  min-width: 160px !important;
+  padding: 10px 16px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  box-shadow: none !important; /* sin glow */
+}
+
+/* Botón primario (confirm) */
+.swal2-styled.swal2-confirm {
+  background: #2563eb !important;
+  color: #fff !important;
+  border: 1px solid transparent !important;
+}
+.swal2-styled.swal2-confirm:hover {
+  filter: brightness(1.05) !important;
+}
+
+/* Botón secundario (cancel) – mantener gris SIEMPRE */
+.swal2-styled.swal2-cancel {
+  background: #f9fafb !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+}
+.swal2-styled.swal2-cancel:hover,
+.swal2-styled.swal2-cancel:focus,
+.swal2-styled.swal2-cancel:active {
+  background: #f9fafb !important; /* no cambia a azul */
+  color: #1f2937 !important;
+  border-color: #cbd5e1 !important; /* toque sutil opcional */
+  box-shadow: none !important;
+}
