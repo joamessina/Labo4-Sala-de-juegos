@@ -47,119 +47,155 @@
         </div>
 
         <!-- QUIÉN SOY: siempre visible -->
-        <div class="col-sm-6">
-          <div class="card border-0 h-100 bg-light compact-card">
+        <div class="who-wrapper">
+          <div class="card border-0 bg-light compact-card quien-soy">
             <div class="card-body p-3">
-              <h5 class="card-title h6 mb-2">Quién Soy</h5>
-              <p class="card-text small mb-3">
+              <figure class="tile-thumb">
+                <img
+                  src="assets/home/quien-soy.png"
+                  alt="Quién Soy"
+                  loading="lazy"
+                />
+              </figure>
+
+              <h5 class="card-title h6 mb-2 text-center">Quién Soy</h5>
+              <p class="card-text small mb-3 text-center">
                 Datos del alumno y descripción del juego propio.
               </p>
-              <a
-                routerLink="/quien-soy"
-                class="btn btn-outline-primary btn-sm w-100"
-                >Ver sección</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="my-3" />
-
-      <p class="text-muted small mb-2">Acceso a juegos y listados:</p>
-      <div class="row g-2">
-        <div class="col-sm-6 col-lg-4">
-          <div class="card h-100 bg-light border-0 compact-card">
-            <div class="card-body p-3">
-              <h5 class="card-title h6 mb-2">Ahorcado</h5>
-              <p class="card-text small mb-3">Juego de adivinar palabras.</p>
-
-              <!-- Si NO está logueado, botón deshabilitado -->
-              <a
-                *ngIf="!isLogged()"
-                class="btn btn-secondary btn-sm w-100 disabled"
-              >
-                Iniciá sesión para jugar
-              </a>
-
-              <!-- Si está logueado, linkea al juego -->
-              <a
-                *ngIf="isLogged()"
-                routerLink="/juegos/ahorcado"
-                class="btn btn-primary btn-sm w-100"
-              >
-                Jugar
-              </a>
+              <div class="text-center">
+                <a
+                  routerLink="/quien-soy"
+                  class="btn btn-outline-primary btn-sm px-4"
+                >
+                  Ver sección
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- más tarjetas acá -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="card h-100 bg-light border-0 compact-card">
-            <div class="card-body p-3">
-              <h5 class="card-title h6 mb-2">¿Mayor o Menor?</h5>
-              <p class="card-text small mb-3">Hasta dónde llegarás.</p>
+        <hr class="my-3" />
 
-              <a
-                *ngIf="!isLogged()"
-                class="btn btn-secondary btn-sm w-100 disabled"
-              >
-                Iniciá sesión para jugar
-              </a>
-              <a
-                *ngIf="isLogged()"
-                routerLink="/juegos/mayor-menor"
-                class="btn btn-primary btn-sm w-100"
-              >
-                Jugar
-              </a>
+        <p class="text-muted small mb-2">Acceso a juegos y listados:</p>
+        <div class="games-grid">
+          <div class="game">
+            <div class="card h-100 bg-light border-0 compact-card">
+              <div class="card-body p-3">
+                <figure class="tile-thumb">
+                  <img
+                    src="assets/home/ahorcado.png"
+                    alt="Ahorcado"
+                    loading="lazy"
+                  />
+                </figure>
+                <h5 class="card-title h6 mb-2">Ahorcado</h5>
+                <p class="card-text small mb-3">Juego de adivinar palabras.</p>
+
+                <a
+                  *ngIf="!isLogged()"
+                  class="btn btn-secondary btn-sm w-100 disabled"
+                >
+                  Iniciá sesión para jugar
+                </a>
+                <a
+                  *ngIf="isLogged()"
+                  routerLink="/juegos/ahorcado"
+                  class="btn btn-primary btn-sm w-100"
+                  >Jugar</a
+                >
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="col-sm-6 col-lg-4">
-          <div class="card h-100 bg-light border-0 compact-card">
-            <div class="card-body p-3">
-              <label class="form-label">Preguntados</label>
-              <p>Juego de adivinar personajes de Los Simpsons.</p>
-              <a
-                *ngIf="!isLogged()"
-                class="btn btn-secondary btn-sm w-100 disabled"
-              >
-                Iniciá sesión para jugar
-              </a>
-              <a
-                *ngIf="isLogged()"
-                routerLink="/juegos/preguntados"
-                class="btn btn-primary btn-sm w-100"
-              >
-                Jugar
-              </a>
+          <!-- más tarjetas acá -->
+          <div class="game">
+            <div class="card h-100 bg-light border-0 compact-card">
+              <div class="card-body p-3">
+                <figure class="tile-thumb">
+                  <img
+                    src="assets/home/minmax.png"
+                    alt="Mayor o Menor"
+                    loading="lazy"
+                  />
+                </figure>
+
+                <h5 class="card-title h6 mb-2">¿Mayor o Menor?</h5>
+                <p class="card-text small mb-3">Hasta dónde llegarás.</p>
+
+                <a
+                  *ngIf="!isLogged()"
+                  class="btn btn-secondary btn-sm w-100 disabled"
+                  >Iniciá sesión para jugar</a
+                >
+                <a
+                  *ngIf="isLogged()"
+                  routerLink="/juegos/mayor-menor"
+                  class="btn btn-primary btn-sm w-100"
+                  >Jugar</a
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-6 col-lg-4">
-          <div class="card h-100 bg-light border-0 compact-card">
-            <div class="card-body p-3">
-              <h5 class="card-title h6 mb-2">Blackjack</h5>
-              <p class="card-text small mb-3">
-                Ganá llegando a 21 sin pasarte.
-              </p>
 
-              <a
-                *ngIf="!isLogged()"
-                class="btn btn-secondary btn-sm w-100 disabled"
-              >
-                Iniciá sesión para jugar
-              </a>
-              <a
-                *ngIf="isLogged()"
-                routerLink="/juegos/blackjack"
-                class="btn btn-primary btn-sm w-100"
-              >
-                Jugar
-              </a>
+          <div class="game">
+            <div class="card h-100 bg-light border-0 compact-card">
+              <div class="card-body p-3">
+                <figure class="tile-thumb">
+                  <img
+                    src="assets/home/preguntados.png"
+                    alt="Preguntados"
+                    loading="lazy"
+                  />
+                </figure>
+
+                <h5 class="card-title h6 mb-2">Preguntados</h5>
+                <p class="card-text small mb-3">
+                  Juego de adivinar personajes de Los Simpsons.
+                </p>
+
+                <a
+                  *ngIf="!isLogged()"
+                  class="btn btn-secondary btn-sm w-100 disabled"
+                  >Iniciá sesión para jugar</a
+                >
+                <a
+                  *ngIf="isLogged()"
+                  routerLink="/juegos/preguntados"
+                  class="btn btn-primary btn-sm w-100"
+                  >Jugar</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="game">
+            <div class="card h-100 bg-light border-0 compact-card">
+              <div class="card-body p-3">
+                <figure class="tile-thumb">
+                  <img
+                    src="assets/home/blackjack.png"
+                    alt="Blackjack"
+                    loading="lazy"
+                  />
+                </figure>
+
+                <h5 class="card-title h6 mb-2">Blackjack</h5>
+                <p class="card-text small mb-3">
+                  Ganá llegando a 21 sin pasarte.
+                </p>
+
+                <a
+                  *ngIf="!isLogged()"
+                  class="btn btn-secondary btn-sm w-100 disabled"
+                  >Iniciá sesión para jugar</a
+                >
+                <a
+                  *ngIf="isLogged()"
+                  routerLink="/juegos/blackjack"
+                  class="btn btn-primary btn-sm w-100"
+                  >Jugar</a
+                >
+              </div>
             </div>
           </div>
         </div>

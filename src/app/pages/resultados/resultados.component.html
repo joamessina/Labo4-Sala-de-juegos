@@ -1,0 +1,29 @@
+<div class="wrap card shadow-sm">
+  <div class="card-body p-3">
+    <h2 class="h5 mb-3">Mis resultados</h2>
+
+    <div *ngIf="loading" class="muted">Cargando…</div>
+    <div *ngIf="!loading && err" class="text-danger small">{{ err }}</div>
+
+    <table *ngIf="!loading && !err && items.length" class="table table-sm">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Juego</th>
+          <th class="text-end">Puntaje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of items">
+          <td>{{ r.fecha | date : "short" }}</td>
+          <td>{{ r.juego }}</td>
+          <td class="text-end fw-semibold">{{ r.puntaje }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!loading && !err && !items.length" class="muted">
+      Aún no registrás partidas.
+    </div>
+  </div>
+</div>

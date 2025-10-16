@@ -23,8 +23,9 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   public opciones: string[] = [];
   public cantidadDeOpciones: number = 4;
   public puntosJugador: number = 0;
-  public contadorDeJugadas: number = 0;
-  public cantidadDeJugadas: number = 1;
+  public vidas: number = 1; // 1 sola vida
+  public racha: number = 0; // racha de aciertos (opcional)
+
   public indiceActual: number = 0;
   public mensaje!: string;
   public botonesDeshabilitados: boolean = false;
@@ -58,8 +59,9 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   public resetearValores(): void {
     this.opciones = [];
     this.personajes = [];
-    this.contadorDeJugadas = 0;
-    this.puntosJugador = 0;
+    this.puntosJugador = 0; // si lo usás como puntaje/racha, dejalo
+    this.racha = 0;
+    this.vidas = 1; // una sola vida
     this.botonesDeshabilitados = false;
   }
 
@@ -106,17 +108,27 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
     }
 
     this.comunicarAlUsuario('jugada', this.mensaje, '', icono);
-    this.contadorDeJugadas++;
+
+    if (icono === 'error') {
+      // perdió la única vida
+      this.vidas = 0;
+      this.botonesDeshabilitados = true;
+      const puntaje = this.puntosJugador; // o this.racha si lo preferís
+      this.mensaje = `¡Perdiste! Tu racha fue: ${puntaje} acierto(s).`;
+      this.comunicarAlUsuario('final', 'JUEGO TERMINADO', this.mensaje, 'info');
+      return;
+    }
+
+    // si acertó, suma y sigue
+    this.racha++;
     this.indiceActual++;
 
-    if (this.contadorDeJugadas < this.cantidadDeJugadas) {
-      this.cargarSiguientePersonaje();
-    } else {
-      this.botonesDeshabilitados = true;
-      this.mensaje = `Se terminó el juego! Tu puntaje es: ${this.puntosJugador} puntos.
-                      Si te gustó, volvé a jugar`;
-      this.comunicarAlUsuario('final', 'JUEGO TERMINADO', this.mensaje, 'info');
+    // si nos quedamos sin personajes, volvemos al inicio del array
+    if (this.indiceActual >= this.personajes.length) {
+      this.indiceActual = 0; // o podés reshufflear si querés
     }
+
+    this.cargarSiguientePersonaje();
   }
 
   public comunicarAlUsuario(

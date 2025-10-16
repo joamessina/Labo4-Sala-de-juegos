@@ -125,3 +125,25 @@
   color: #fef3c7;
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
+
+.head-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.chip {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.chip-btn {
+  margin: 0 6px;
+  width: 24px;
+  height: 24px;
+  line-height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #fff;
+}

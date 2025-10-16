@@ -4,11 +4,37 @@
       <h2>BLACKJACK</h2>
 
       <div class="head-actions">
-        <button class="btn btn-primary btn-sm" (click)="reset()">
-          Jugar de nuevo
+        <div class="chip">Banca: ${{ bank }}</div>
+
+        <div class="chip">
+          Apuesta:
+          <button
+            class="chip-btn"
+            (click)="decBet()"
+            [disabled]="inRound || bet <= minBet"
+          >
+            -
+          </button>
+          ${{ bet }}
+          <button
+            class="chip-btn"
+            (click)="incBet()"
+            [disabled]="inRound || bet >= maxBet"
+          >
+            +
+          </button>
+        </div>
+
+        <button
+          class="btn btn-primary btn-sm"
+          (click)="newRound()"
+          [disabled]="inRound || bank < bet"
+        >
+          Nueva mano
         </button>
-        <button class="btn btn-outline-light btn-sm" (click)="goHome()">
-          Home
+
+        <button class="btn btn-outline-light btn-sm" (click)="leaveTable()">
+          Dejar mesa
         </button>
       </div>
     </header>
@@ -72,12 +98,16 @@
           <button
             class="btn btn-success"
             (click)="hit()"
-            [disabled]="ended || total(player) >= 21"
+            [disabled]="ended || !inRound || total(player) >= 21"
           >
             Pedir
           </button>
 
-          <button class="btn btn-warning" (click)="stand()" [disabled]="ended">
+          <button
+            class="btn btn-warning"
+            (click)="stand()"
+            [disabled]="ended || !inRound"
+          >
             Plantarse
           </button>
         </div>

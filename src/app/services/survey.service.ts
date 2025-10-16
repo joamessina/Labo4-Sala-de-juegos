@@ -1,28 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Survey } from '../models/survey';
-import { doc, getFirestore, setDoc } from '@angular/fire/firestore';
+import { SupabaseService } from '../../supabase/supabase.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SurveyService {
+export type Survey = {
+  user?: string;
+  user_id?: string;
+  game: string;
+  name: string;
+  surname: string;
+  age: number;
+  phone: string;
+  commentary: string;
+  valueRange: string;
+  recommendCheck: boolean;
+};
 
-  constructor() { }
+@Injectable({ providedIn: 'root' })
+export class EncuestaService {
+  private table = 'encuestas';
+  constructor(private sb: SupabaseService) {}
 
-  async setSurveyInfo(survey: Survey)
-  {
-    let path = `surveys/${survey.game}_${survey.name}${survey.surname}_${survey.phone}`;
-    setDoc(doc(getFirestore(),path),
-    {
-      user: survey.user,
-      game: survey.game,
-      name: survey.name,
-      surname: survey.surname,
-      age: survey.age,
-      phone: survey.phone,
-      commentary: survey.commentary,
-      valueRange: survey.valueRange,
-      recommendCheck: survey.recommendCheck
-    })
+  async submit(s: Survey) {
+    const { error } = await this.sb.client.from(this.table).insert({
+      user_id: s.user_id ?? null,
+      email: s.user ?? '',
+      game: s.game,
+      name: s.name,
+      surname: s.surname,
+      age: s.age,
+      phone: s.phone,
+      value_range: s.valueRange,
+      recommend: s.recommendCheck,
+      commentary: s.commentary,
+    });
+    if (error) throw error;
   }
 }

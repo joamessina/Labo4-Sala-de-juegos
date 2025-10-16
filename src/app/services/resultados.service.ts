@@ -1,13 +1,11 @@
+// resultados.service.ts
 import { Injectable } from '@angular/core';
 import { SupabaseService } from '../../supabase/supabase.service';
 import { Resultados } from '../pages/interfaces/resultados.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ResultadosService {
   private tabla = 'resultados';
-
   constructor(private sb: SupabaseService) {}
 
   async registrarResultado(
@@ -21,7 +19,6 @@ export class ResultadosService {
       juego,
       fecha: new Date().toISOString(),
     });
-
     if (error) throw error;
   }
 
@@ -31,12 +28,29 @@ export class ResultadosService {
       .select('*')
       .order('puntaje', { ascending: false })
       .limit(limit);
-
     if (error) throw error;
+    return (data ?? []).map((r: any) => ({ ...r, fecha: new Date(r.fecha) }));
+  }
 
-    return (data ?? []).map((r: any) => ({
-      ...r,
-      fecha: r.fecha ? new Date(r.fecha) : new Date(),
-    })) as Resultados[];
+  async devolverResultadosPorUsuario(email: string, limit = 50) {
+    const { data, error } = await this.sb.client
+      .from(this.tabla)
+      .select('*')
+      .eq('usuario', email)
+      .order('fecha', { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data ?? []).map((r: any) => ({ ...r, fecha: new Date(r.fecha) }));
+  }
+
+  async devolverResultadosPorJuego(juego: string, limit = 50) {
+    const { data, error } = await this.sb.client
+      .from(this.tabla)
+      .select('*')
+      .eq('juego', juego)
+      .order('fecha', { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data ?? []).map((r: any) => ({ ...r, fecha: new Date(r.fecha) }));
   }
 }
