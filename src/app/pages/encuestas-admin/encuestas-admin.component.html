@@ -1,0 +1,51 @@
+<div class="adm-wrap">
+  <h2 class="mb-3">Respuestas de Encuestas</h2>
+
+  <div *ngIf="loading" class="alert alert-info">Cargando...</div>
+  <div *ngIf="err" class="alert alert-danger">{{ err }}</div>
+
+  <div *ngIf="!loading && !err">
+    <div class="small text-muted mb-2">
+      Total: {{ items.length }} respuestas
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-sm table-striped align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Teléfono</th>
+            <th>¿Recomienda?</th>
+            <th>Favorito</th>
+            <th>¿Más juegos?</th>
+            <th>Comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of items">
+            <td>{{ r.fecha | date : "dd/MM/yyyy HH:mm" }}</td>
+            <td>{{ r.email || "—" }}</td>
+            <td>{{ r.nombre }} {{ r.apellido }}</td>
+            <td>{{ r.edad }}</td>
+            <td>{{ r.telefono }}</td>
+            <td>
+              <span
+                class="badge"
+                [class.text-bg-success]="r.volverias === 'si'"
+                [class.text-bg-secondary]="r.volverias !== 'si'"
+              >
+                {{ r.volverias === "si" ? "Sí" : "No" }}
+              </span>
+            </td>
+            <td>{{ r.favorito || "—" }}</td>
+            <td>{{ r.mejoras ? "Sí" : "No" }}</td>
+            <td class="w-50">{{ r.comentario }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

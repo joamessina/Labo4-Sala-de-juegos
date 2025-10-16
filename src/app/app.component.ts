@@ -2,6 +2,7 @@ import { Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { UsersService } from '../app/users/users.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,11 @@ import { AuthService } from '../auth/auth.service';
 export class AppComponent {
   isLogged;
   userEmail;
-
-  constructor(private auth: AuthService) {
+  isAdmin;
+  constructor(private auth: AuthService, private users: UsersService) {
     this.isLogged = this.auth.isLoggedIn;
     this.userEmail = computed(() => this.auth.user()?.email ?? '');
+    this.isAdmin = this.users.isAdmin;
   }
 
   async logout() {

@@ -3,6 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { QuienSoyComponent } from './pages/quien-soy/quien-soy.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { adminGuard } from './guard/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, title: 'Home' },
@@ -28,6 +29,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/encuesta/encuesta.component').then(
         (m) => m.EncuestaComponent
+      ),
+  },
+
+  {
+    path: 'admin/encuestas',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./pages/encuestas-admin/encuestas-admin.component').then(
+        (m) => m.EncuestasAdminComponent
       ),
   },
 

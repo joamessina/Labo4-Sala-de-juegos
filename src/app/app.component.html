@@ -11,6 +11,10 @@
         <a class="nav-link" routerLink="/quien-soy">Quién Soy</a>
       </li>
 
+      <li class="nav-item" *ngIf="isAdmin()">
+        <a class="nav-link" routerLink="/admin/encuestas">Encuestas (Admin)</a>
+      </li>
+
       <!-- SOLO si NO está logueado -->
       <ng-container *ngIf="!isLogged()">
         <li class="nav-item">

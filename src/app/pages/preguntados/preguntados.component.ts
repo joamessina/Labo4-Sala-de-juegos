@@ -59,9 +59,9 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   public resetearValores(): void {
     this.opciones = [];
     this.personajes = [];
-    this.puntosJugador = 0; // si lo usás como puntaje/racha, dejalo
+    this.puntosJugador = 0;
     this.racha = 0;
-    this.vidas = 1; // una sola vida
+    this.vidas = 1;
     this.botonesDeshabilitados = false;
   }
 
@@ -110,22 +110,19 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
     this.comunicarAlUsuario('jugada', this.mensaje, '', icono);
 
     if (icono === 'error') {
-      // perdió la única vida
       this.vidas = 0;
       this.botonesDeshabilitados = true;
-      const puntaje = this.puntosJugador; // o this.racha si lo preferís
+      const puntaje = this.puntosJugador;
       this.mensaje = `¡Perdiste! Tu racha fue: ${puntaje} acierto(s).`;
       this.comunicarAlUsuario('final', 'JUEGO TERMINADO', this.mensaje, 'info');
       return;
     }
 
-    // si acertó, suma y sigue
     this.racha++;
     this.indiceActual++;
 
-    // si nos quedamos sin personajes, volvemos al inicio del array
     if (this.indiceActual >= this.personajes.length) {
-      this.indiceActual = 0; // o podés reshufflear si querés
+      this.indiceActual = 0;
     }
 
     this.cargarSiguientePersonaje();
