@@ -6,6 +6,8 @@ import { firstValueFrom, catchError, map, of } from 'rxjs';
 import { GamesService } from '../../app/services/games.supabase.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { Carta, HtmlCarta } from './deck.model';
+import { ResultadosService } from '../services/resultados.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-minmax',
@@ -32,8 +34,25 @@ export class MinmaxComponent implements OnInit {
   endOfGame = false;
   endMsg = '';
 
+  private resultados = inject(ResultadosService);
+  private auth = inject(AuthService);
+
   async ngOnInit() {
     await this.initGame();
+  }
+
+  private async saveScore() {
+    const u = this.auth.user();
+    if (!u?.email) return; // si no hay login, no guardo
+    try {
+      await this.resultados.registrarResultado(
+        u.email,
+        this.puntuacion, // << puntaje que ya llevás
+        'Mayor o Menor' // nombre del juego
+      );
+    } catch (e) {
+      console.warn('[minmax] no pudo guardar resultado', e);
+    }
   }
 
   private async initGame() {
@@ -137,6 +156,7 @@ export class MinmaxComponent implements OnInit {
       if (best < this.puntuacion) {
         this.gameService.setGameInfo('minmax', this.puntuacion);
       }
+      this.saveScore();
     }
   }
 
@@ -154,6 +174,7 @@ export class MinmaxComponent implements OnInit {
       if (best < this.puntuacion) {
         this.gameService.setGameInfo('minmax', this.puntuacion);
       }
+      this.saveScore();
     }
   }
 

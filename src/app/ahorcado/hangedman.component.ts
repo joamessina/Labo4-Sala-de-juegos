@@ -8,6 +8,9 @@ import {
 } from '@angular/core';
 import { GamesService } from '../../app/services/games.supabase.service';
 import { Router } from '@angular/router';
+// +++ imports nuevos +++
+import { ResultadosService } from '../services/resultados.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-hangedman',
@@ -31,11 +34,27 @@ export class HangedmanComponent implements AfterViewInit {
 
   private gameService = inject(GamesService);
   private router = inject(Router);
+  private resultados = inject(ResultadosService);
+  private auth = inject(AuthService);
 
   @ViewChild('keyboard') keyboard?: ElementRef<HTMLDivElement>;
 
   constructor() {
     this.startNewRound();
+  }
+
+  private async saveScore(puntaje: number) {
+    const u = this.auth.user();
+    if (!u?.email) return;
+    try {
+      await this.resultados.registrarResultado(
+        u.email,
+        puntaje, // intentos restantes o 0 si perdió
+        'Ahorcado'
+      );
+    } catch (e) {
+      console.warn('[ahorcado] no pudo guardar resultado', e);
+    }
   }
 
   ngAfterViewInit() {
@@ -90,6 +109,7 @@ export class HangedmanComponent implements AfterViewInit {
     if (this.guesses <= 0) {
       this.endOfGame = true;
       this.disableButtons();
+      this.saveScore(0);
       return;
     }
 
@@ -103,6 +123,7 @@ export class HangedmanComponent implements AfterViewInit {
       }
       this.endOfGame = true;
       this.disableButtons();
+      this.saveScore(this.guesses);
     }
   }
 

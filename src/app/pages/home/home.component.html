@@ -46,11 +46,12 @@
           </div>
         </div>
 
-        <!-- QUIÉN SOY: siempre visible -->
-        <div class="who-wrapper">
-          <div class="card border-0 bg-light compact-card quien-soy">
+        <!-- QUIÉN SOY + ENCUESTA (fila hero) -->
+        <div class="who-row">
+          <!-- Quién Soy -->
+          <div class="who-card card border-0 bg-light compact-card">
             <div class="card-body p-3">
-              <figure class="tile-thumb">
+              <figure class="tile-thumb tile-hero">
                 <img
                   src="assets/home/quien-soy.png"
                   alt="Quién Soy"
@@ -68,6 +69,29 @@
                   class="btn btn-outline-primary btn-sm px-4"
                 >
                   Ver sección
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Encuesta -->
+          <div class="who-card card border-0 bg-light compact-card">
+            <div class="card-body p-3">
+              <figure class="tile-thumb tile-hero">
+                <img
+                  src="assets/home/encuesta.png"
+                  alt="Encuesta"
+                  loading="lazy"
+                />
+              </figure>
+
+              <h5 class="card-title h6 mb-2 text-center">Encuesta</h5>
+              <p class="card-text small mb-3 text-center">
+                Dejanos tu opinión sobre la app.
+              </p>
+              <div class="text-center">
+                <a routerLink="/encuesta" class="btn btn-primary btn-sm px-4">
+                  Responder
                 </a>
               </div>
             </div>

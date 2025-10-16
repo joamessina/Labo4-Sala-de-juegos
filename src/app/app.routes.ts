@@ -23,5 +23,13 @@ export const routes: Routes = [
       import('./pages/juegos/juegos.module').then((m) => m.JuegosModule),
   },
 
+  {
+    path: 'encuesta',
+    loadComponent: () =>
+      import('./pages/encuesta/encuesta.component').then(
+        (m) => m.EncuestaComponent
+      ),
+  },
+
   { path: '**', redirectTo: '' },
 ];

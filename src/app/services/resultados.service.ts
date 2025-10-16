@@ -1,4 +1,3 @@
-// resultados.service.ts
 import { Injectable } from '@angular/core';
 import { SupabaseService } from '../../supabase/supabase.service';
 import { Resultados } from '../pages/interfaces/resultados.interface';

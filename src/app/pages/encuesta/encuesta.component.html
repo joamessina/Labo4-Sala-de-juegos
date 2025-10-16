@@ -1,0 +1,109 @@
+<div class="survey-shell">
+  <div class="survey-card">
+    <header class="survey-header">
+      <img src="assets/home/encuesta.png" alt="Encuesta" class="survey-img" />
+      <h2>Encuesta de satisfacción</h2>
+      <p>Queremos conocer tu opinión sobre la app y los juegos.</p>
+    </header>
+
+    <form (ngSubmit)="enviar()" #f="ngForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input
+            type="text"
+            [(ngModel)]="model.nombre"
+            name="nombre"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Apellido:</label>
+          <input
+            type="text"
+            [(ngModel)]="model.apellido"
+            name="apellido"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Edad:</label>
+          <input
+            type="number"
+            [(ngModel)]="model.edad"
+            name="edad"
+            min="18"
+            max="99"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono:</label>
+          <input
+            type="text"
+            [(ngModel)]="model.telefono"
+            name="telefono"
+            required
+          />
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="form-group">
+        <label>¿Qué te pareció el juego propio?</label>
+        <textarea
+          [(ngModel)]="model.comentario"
+          name="comentario"
+          required
+        ></textarea>
+      </div>
+
+      <!-- comentario y radios ya tienen name. Agregá name al checkbox -->
+      <div class="form-group">
+        <label>¿Te gustaría que agreguemos más juegos?</label>
+        <label>
+          <input
+            type="radio"
+            name="mejoras"
+            [(ngModel)]="model.mejoras"
+            value="si"
+            required
+          />
+          Sí
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="mejoras"
+            [(ngModel)]="model.mejoras"
+            value="no"
+            required
+          />
+          No
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>¿Cuál fue tu juego favorito?</label>
+        <select [(ngModel)]="model.favorito" name="favorito">
+          <option value="" selected>— Elegí —</option>
+          <option>Ahorcado</option>
+          <option>¿Mayor o Menor?</option>
+          <option>Preguntados</option>
+          <option>Blackjack</option>
+        </select>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="btn btn-primary">Enviar encuesta</button>
+      </div>
+
+      <div *ngIf="err" class="alert alert-danger mt-3">{{ err }}</div>
+      <div *ngIf="msg" class="alert alert-success mt-3">{{ msg }}</div>
+    </form>
+  </div>
+</div>

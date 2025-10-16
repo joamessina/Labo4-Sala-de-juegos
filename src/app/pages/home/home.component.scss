@@ -26,25 +26,6 @@ hr {
   margin: 0.75rem 0;
 }
 
-.tile-thumb {
-  width: 100%;
-  height: 110px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  background: #0f172a;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-
-  img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-    image-rendering: pixelated;
-  }
-}
-
 .compact-card {
   border-radius: 14px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
@@ -150,4 +131,52 @@ hr {
   .who-wrapper .quien-soy {
     width: 100%;
   }
+}
+
+.who-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.who-row .who-card {
+  height: 100%;
+  display: flex;
+}
+.who-row .who-card .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tile-thumb.tile-hero {
+  height: 160px;
+  border-radius: 12px;
+  background: #0f172a;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+}
+
+.who-row .who-card .card-title,
+.who-row .who-card .card-text {
+  text-align: center;
+}
+.who-row .who-card .btn {
+  align-self: center;
 }
